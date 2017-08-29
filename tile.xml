@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<project>
+  <build>
+    <plugins>
+      <!--
+        Write out the dependency tree and list to the jar when we build such that we can see the point in time state of the
+        dependencies. Ideally we would have slighty more determinable dependencies but that would trade off flexibility
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.0.1</version>
+        <executions>
+          <execution>
+            <id>generate-dep-list</id>
+            <!--
+              Although these could be considered generated resources they are not used within the project they only make sense in the
+              final package, hence package phase.
+              And you don't want to regenerate these files for every goal called
+            -->
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>list</goal>
+            </goals>
+            <configuration>
+              <outputFile>${project.build.outputDirectory}/META-INF/maven/${project.groupId}/${project.artifactId}/dependency.list</outputFile>
+            </configuration>
+          </execution>
+          <execution>
+            <id>generate-dep-tree</id>
+            <!--
+              Although these could be considered generated resources they are not used within the project they only make sense in the
+              final package, hence package phase.
+              And you don't want to regenerate these files for every goal called
+            -->
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>tree</goal>
+            </goals>
+            <configuration>
+              <outputFile>${project.build.outputDirectory}/META-INF/maven/${project.groupId}/${project.artifactId}/dependency.tree</outputFile>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
